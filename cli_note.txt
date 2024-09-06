@@ -1,2 +1,11 @@
-npx create-expo-app client
-
+Press Win + S to open the search bar.
+Type "PowerShell" and right-click on "Windows PowerShell" from the search results.
+Select "Run as administrator" from the context menu.
+Get-ExecutionPolicy
+Set-ExecutionPolicy RemoteSigned
+Get-ExecutionPolicy
+it should show remote signed
+in cmd / shell npm i -g expo-cli
+expo init nss
+blank 
+npm start
