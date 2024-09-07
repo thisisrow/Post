@@ -17,6 +17,7 @@ npm install dotenv
 npm install bcrypt
 npm install cors
 npm install nodmon
+npm install jsonwebtoken
 CREATE.env file 
 
 chang in packit.json 

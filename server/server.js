@@ -21,13 +21,10 @@ app.use(morgan('dev'))
 //PORT
 const PORT = process.env.PORT||8080
 
-//ROUTES
-app.get("",(req,res)=>{
-    res.status(200).json({
-        success : true,
-        message : "Hello world runing"
-    });
-});
+//coustom routes
+//
+app.use("/api/v1/auth", require("./routes/userRoutes"));
+
 app.listen(PORT,()=>{
     console.log(`SERVER RUNNING ${PORT}`.bgGreen.white);
     
