@@ -1,0 +1,27 @@
+express 
+morgan
+working on MVC model-view-controller
+create folder in server named:-
+    config
+    controlls
+    helpers
+    models
+    routes
+    server.js
+npm init command
+npm install express
+npm install mongoose
+npm install morgan
+npm install colors
+npm install dotenv
+npm install bcrypt
+npm install cors
+npm install nodmon
+CREATE.env file 
+
+chang in packit.json 
+"scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "server": "nodemon server.js"
+  },
