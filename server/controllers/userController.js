@@ -1,8 +1,13 @@
-const { hashPassword,comparePassword } = require("../helpers/authHelper");
+const { hashPassword, comparePassword } = require("../helpers/authHelper");
 const userModel = require("../models/userModel");
-const jwt = require('jsonwebtoken')
+const JWT = require("jsonwebtoken");
+var { expressjwt: jwt } = require("express-jwt");
 
-
+//middleware
+const requireSingIn = jwt({
+  secret: process.env.JWT_S,
+  algorithms: ["HS256"],
+});
 //register
 const registerController = async (req, res) => {
   try {
@@ -37,7 +42,6 @@ const registerController = async (req, res) => {
     //hashed pasword
     const hashedPassword = await hashPassword(password);
 
-
     //save user
     const user = await userModel({
       name,
@@ -58,8 +62,6 @@ const registerController = async (req, res) => {
     });
   }
 };
-
-
 //login
 const loginController = async (req, res) => {
   try {
@@ -87,11 +89,11 @@ const loginController = async (req, res) => {
         message: "Invalid usrname or password",
       });
     }
-    //wen token 
-    const token = await jwt.sign({ _id: user._id },process.env.jwt_s,{
-        expiresIn:'1d'
-    })
-    //undefine password 
+    //wen token
+    const token = await JWT.sign({ _id: user._id }, process.env.JWT_S, {
+      expiresIn: "1d",
+    });
+    //undefine password
     user.password = undefined;
     res.status(200).send({
       success: true,
@@ -109,4 +111,43 @@ const loginController = async (req, res) => {
   }
 };
 
-module.exports = { registerController,loginController };
+//update profile
+const updateUserController = async (req, res) => {
+  try {
+    const { name, password, email } = req.body;
+    //user find
+    const user = await userModel.findOne({ email });
+    //password validate
+    if (password && password.length < 6) {
+      return res.status(400).send({
+        success: false,
+        message: "Password is required and should be 6 character long",
+      });
+    }
+    const hashedPassword = password ? await hashPassword(password) : undefined;
+    //updated useer
+    const updatedUser = await userModel.findOneAndUpdate(
+      { email },
+      {
+        name: name || user.name,
+        password: hashedPassword || user.password,
+      },
+      { new: true }
+    );
+    updatedUser.password = undefined;
+    res.status(200).send({
+      success: true,
+      message: "Profile Updated Please Login",
+      updatedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error In User Update Api",
+      error,
+    });
+  }
+};
+
+module.exports = {requireSingIn, registerController, loginController, updateUserController };

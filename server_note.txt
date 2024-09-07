@@ -18,6 +18,7 @@ npm install bcrypt
 npm install cors
 npm install nodmon
 npm install jsonwebtoken
+npm i express-jwt
 CREATE.env file 
 
 chang in packit.json 
