@@ -2,28 +2,32 @@ import { StyleSheet, Text, Alert, View, Button } from "react-native";
 import React, { useState } from "react";
 import InputBox from "../components/Form/InputBox";
 import SubmitButton from "../components/Form/SubmitButton";
+import axios from "axios";
 
 const Register = ({ navigation }) => {
-  const [userName, setUserName] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   //function
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     try {
       setLoading(true);
-      if (!userName || !email || !password) {
+      if (!name || !email || !password) {
         Alert.alert("Please Fil All Fileds");
         setLoading(false);
         return;
       }
       setLoading(false);
-      console.log(userName, email, password);
+      const { data } = await axios.post(
+        "/auth/register",
+        { name, email, password }
+      );
+      alert(data && data.message);
     } catch (error) {
+      alert(error.response.data.message)
       setLoading(false);
-      console.log("====================================");
       console.log(error);
-      console.log("====================================");
     }
   };
   return (
@@ -32,10 +36,10 @@ const Register = ({ navigation }) => {
       <View>
         <InputBox
           inputTitle={"User Name"}
-          placeholder={"Username"}
+          placeholder={"name"}
           keyBordType={"text"}
-          value={userName}
-          setValue={setUserName}
+          value={name}
+          setValue={setName}
         />
         <InputBox
           inputTitle={"Email"}
@@ -71,7 +75,7 @@ const Register = ({ navigation }) => {
           .
         </Text>
       </View>
-      <Text>{JSON.stringify({ userName, email, password }, null, 4)}</Text>
+      <Text>{JSON.stringify({ name, email, password }, null, 4)}</Text>
     </View>
   );
 };

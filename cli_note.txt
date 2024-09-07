@@ -11,5 +11,6 @@ in cmd / shell npm i -g expo-cli
 expo init nss
 blank 
 npm start
-
+install all dependences in packet.json
 npm i axios
+npm install react-native-vector-icons (for icons)

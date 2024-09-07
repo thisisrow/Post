@@ -1,40 +1,60 @@
 import { StyleSheet, Text, Alert, View, Button } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../context/authContext";
 import InputBox from "../components/Form/InputBox";
 import SubmitButton from "../components/Form/SubmitButton";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
 const Register = ({ navigation }) => {
-  const [userName, setUserName] = useState("");
+  //global state
+  const [state, setState] = useContext(AuthContext);
+
+  //state
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   //function
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     try {
       setLoading(true);
-      if (!userName  || !password) {
-        Alert.alert("Faild","Fill All Filds");
+      if (!email || !password) {
+        Alert.alert("Faild", "Fill All Filds");
         setLoading(false);
         return;
       }
       setLoading(false);
-      console.log(userName, password);
+      const { data } = await axios.post(
+        "/auth/login",
+        { email, password }
+      );
+      setState(data);
+      await AsyncStorage.setItem("@auth", JSON.stringify(data));
+      alert(data && data.message);
+      navigation.navigate("Home");
     } catch (error) {
+      alert(error.response.data.message);
       setLoading(false);
-      console.log("====================================");
       console.log(error);
-      console.log("====================================");
     }
   };
+  //temp function to check local storage data
+  const getLcoalStorageData = async () => {
+    let data = await AsyncStorage.getItem("@auth");
+    console.log("Local Storage ==> ", data);
+  };
+  getLcoalStorageData();
+
   return (
     <View style={styles.container}>
       <Text style={styles.pageTitle}>Login</Text>
       <View>
         <InputBox
-          inputTitle={"User Name"}
-          placeholder={"Username"}
+          inputTitle={"Email"}
+          placeholder={"email"}
           keyBordType={"text"}
-          value={userName}
-          setValue={setUserName}
+          value={email}
+          setValue={setEmail}
         />
         <InputBox
           inputTitle={"Password"}
@@ -63,7 +83,7 @@ const Register = ({ navigation }) => {
           .
         </Text>
       </View>
-      <Text>{JSON.stringify({ userName, password }, null, 4)}</Text>
+      <Text>{JSON.stringify({ email, password }, null, 4)}</Text>
     </View>
   );
 };
