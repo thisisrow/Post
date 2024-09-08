@@ -8,8 +8,9 @@ const connectDB = require("./config/db");
 //DOTENV
 dotenv.config();
 
-//DATABASE CONNECTION
+// MONGODB CONNECTION
 connectDB();
+
 //REST OBJECT
 const app = express();
 
@@ -18,12 +19,15 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
+//ROUTES
+app.use("/api/v1/auth", require("./routes/userRoutes"));
+app.use("/api/v1/post", require("./routes/postRoutes"));
+// app.use("/api/v1/post", require("./routes/aboutRoutes"));
+
 //PORT
 const PORT = process.env.PORT || 8080;
 
-//coustom routes
-app.use("/api/v1/auth", require("./routes/userRoutes"));
-app.use("/api/v1/post", require("./routes/postRoutes"));
+//listen
 app.listen(PORT, () => {
-  console.log(`SERVER RUNNING ${PORT}`.bgGreen.white);
+  console.log(`Server Runnning ${PORT}`.bgGreen.white);
 });

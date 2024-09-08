@@ -5,16 +5,19 @@ const {
   updateUserController,
   requireSingIn,
 } = require("../controllers/userController");
+
 //riouter object
 const router = express.Router();
 
 //routes
 // REGISTER || POST
 router.post("/register", registerController);
-// REGISTER || POST
+
+// LOGIN || POST
 router.post("/login", loginController);
-//UPDATE ||PUT
-router.put("/update-user",requireSingIn, updateUserController);
+
+//UPDATE || PUT
+router.put("/update-user", requireSingIn, updateUserController);
 
 //export
 module.exports = router;

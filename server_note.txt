@@ -16,7 +16,7 @@ npm install colors
 npm install dotenv
 npm install bcrypt
 npm install cors
-npm install nodmon
+npm install nodemon
 npm install jsonwebtoken
 npm i express-jwt
 CREATE.env file 

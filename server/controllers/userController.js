@@ -1,13 +1,14 @@
+const JWT = require("jsonwebtoken");
 const { hashPassword, comparePassword } = require("../helpers/authHelper");
 const userModel = require("../models/userModel");
-const JWT = require("jsonwebtoken");
 var { expressjwt: jwt } = require("express-jwt");
 
 //middleware
 const requireSingIn = jwt({
-  secret: process.env.JWT_S,
+  secret: process.env.JWT_SECRET,
   algorithms: ["HS256"],
 });
+
 //register
 const registerController = async (req, res) => {
   try {
@@ -62,6 +63,7 @@ const registerController = async (req, res) => {
     });
   }
 };
+
 //login
 const loginController = async (req, res) => {
   try {
@@ -89,11 +91,12 @@ const loginController = async (req, res) => {
         message: "Invalid usrname or password",
       });
     }
-    //wen token
-    const token = await JWT.sign({ _id: user._id }, process.env.JWT_S, {
-      expiresIn: "1d",
+    //TOKEN JWT
+    const token = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
     });
-    //undefine password
+
+    // undeinfed password
     user.password = undefined;
     res.status(200).send({
       success: true,
@@ -111,7 +114,7 @@ const loginController = async (req, res) => {
   }
 };
 
-//update profile
+//update user
 const updateUserController = async (req, res) => {
   try {
     const { name, password, email } = req.body;
@@ -150,4 +153,9 @@ const updateUserController = async (req, res) => {
   }
 };
 
-module.exports = {requireSingIn, registerController, loginController, updateUserController };
+module.exports = {
+  requireSingIn,
+  registerController,
+  loginController,
+  updateUserController,
+};
