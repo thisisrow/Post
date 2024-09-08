@@ -44,7 +44,7 @@ const FooterMenu = () => {
         />
         <Text>About</Text>
       </TouchableOpacity>
-      <TouchableOpacity
+      <TouchableOpacity 
         onPress={() => {
           navigation.navigate("Account");
         }}
@@ -64,13 +64,13 @@ export default FooterMenu;
 
 const styles = StyleSheet.create({
   conatainer: {
-    borderTopWidth: 2,
-    borderTopColor: "#000000",
+    
     flexDirection: "row",
     margin: 10,
     justifyContent: "space-around",
   },
   icon_style: {
+    
     marginTop: 4,
     marginBottom: 3,
     alignSelf: "center",
