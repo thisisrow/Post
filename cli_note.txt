@@ -7,7 +7,7 @@ Get-ExecutionPolicy
 it should show remote signed
 
 Abouve method if it sow error with below excution
-in cmd / shell npm i -g expo-cli
+in cmd (as adminstartor) npm i -g expo-cli
 expo init nss
 blank 
 npm start
