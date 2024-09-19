@@ -8,7 +8,7 @@ it should show remote signed
 
 Abouve method if it sow error with below excution
 in cmd (as adminstartor) npm i -g expo-cli
-expo init nss
+npx create-expo-app nss
 blank 
 npm start
 install all dependences in packet.json
